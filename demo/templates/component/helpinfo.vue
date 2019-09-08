@@ -14,7 +14,7 @@
     export default {
         data() {
             return {
-                git:'https://github.com/WOSHIliuhailong/djangovue',
+                git:'https://git.vipvz.com/liuhailong/vue-form-django',
                 msg: [
                     {
                         url: 'https://cn.vuejs.org/',
