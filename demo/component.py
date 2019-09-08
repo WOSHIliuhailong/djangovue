@@ -36,7 +36,7 @@ def renderPlus(request, response):
                                                         _path)
 
             with open(rel_path, 'r', encoding='utf-8') as fp:
-                _content = _content.replace(item, GrammarTransform(_path[:-4],
+                _content = _content.replace(item, GrammarTransform(_path.split('.')[0],
                                                                    fp.readlines()))
 
     return HttpResponse(_content)
@@ -57,32 +57,37 @@ def GrammarTransform(componentname, Vue):
         _header = ''
         _html = []
         _js = []
+        _style = []
         _original_js = (
             'script',
         )
         _original_html = (
             'template',
-            'style'
+        )
+        _original_style = (
+            'style',
         )
 
         # 读取行匹配模板语句类型
         for line in Vue:
-            if not line.replace(' ','').replace('\n','').replace('\r','') is '':
+            if not line.replace(' ', '').replace('\n', '').replace('\r', '') is '':
 
                 _re = re.compile(r'<(\S+)>').findall(line)
-
 
                 if len(_re):
                     _item = _re[0]
                     # 如果是头的话保存起来
-                    if _item in (_original_js + _original_html) or _item[1:] in (_original_js + _original_html):
+                    _labels = (_original_js + _original_html + _original_style)
+                    if _item in _labels or _item[1:] in _labels:
                         _header = _item
                         continue
 
                 # 是模板的放到template ，不是的放到js
                 if _header in _original_html:
-                    _html.append(line.replace('\n',''))   # 去换行
-
+                    _html.append(line.replace('\n', '').replace("'", '"'))
+                # 组件中style不受支持
+                # elif _header in _original_style:
+                #     _style.append(line.replace('\n', ''))
                 elif _header in _original_js:
                     _js.append(line.replace("'", '"'))
 
@@ -90,7 +95,7 @@ def GrammarTransform(componentname, Vue):
         return _grammar % (
             componentname,
             ''.join(_js[1:-1]),
-            ''.join(_html)
+            ''.join(_html) # + '<style>' + ''.join(_style) + '</style>'
         )
 
     else:

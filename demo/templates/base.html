@@ -6,15 +6,60 @@
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
+<style>
+</style>
 <body>
     <div id="demo">
         <helloworld></helloworld>
+        <helpinfo></helpinfo>
+        <div style="text-align: center">
+            <p>组件复用:</p>
+            <isrect v-bind:color="red"></isrect>
+            <isrect v-bind:color="blue"></isrect>
+        </div>
+        <div style="text-align: center;">
+            <p>组件传值：<span v-text="total"></span></p>
+            <custom v-on:plus="plus"></custom>
+        </div>
+        <div style="text-align: center;">
+            <p>
+                组件切换
+                <button @click="cut">切换</button>
+            </p>
+            <commponent v-bind:is="componentshow"></commponent>
+        </div>
     </div>
 </body>
 <script>
     import 'helloworld.vue'
+    import 'helpinfo.vue'
+    import 'isrect.vue'
+    import 'custom.vue'
+    import 'rectx.vue'
+    import 'recty.vue'
+
     var app=new Vue({
         el:"#demo",
+        data(){
+            return{
+                red:{
+                    'background':'#F56C6C'
+                },
+                blue:{
+                    'background':'#409EFF'
+                },
+                total:0,
+                componentshow:'rectx'
+            }
+        },
+        methods:{
+            plus(number){
+                this.total+=number;
+            },
+            cut(e){
+                this.componentshow = this.componentshow === 'recty'?'rectx':'recty'
+            }
+        }
 
     })
 </script>
