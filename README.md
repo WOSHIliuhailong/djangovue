@@ -20,3 +20,5 @@ import 组件名称
 具体使用示例在 demo 中
 
 核心文件是./demo/component.py
+![chrome](https://github.com/WOSHIliuhailong/djangovue/blob/dev/chrome_2019-09-11_16-07-40.png)
+![route](https://github.com/WOSHIliuhailong/djangovue/blob/dev/Code_2019-09-11_16-07-30.png)
